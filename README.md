@@ -1,3 +1,7 @@
+---
+permalink: /index.html
+---
+
 ## Welcome to GitHub Pages
 
 Hei
