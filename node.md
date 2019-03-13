@@ -1,3 +1,7 @@
+---
+permalink: /node.html
+---
+
 # Node
 
 Side om noder
