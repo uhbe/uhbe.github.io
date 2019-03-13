@@ -1,5 +1,5 @@
 ---
-permalink: /ssv.md
+permalink: /ssv.html
 ---
 
 # SSV

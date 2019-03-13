@@ -1,5 +1,5 @@
 ---
-permalink: /ssb.md
+permalink: /ssb.html
 ---
 
 # SSB
