@@ -1,3 +1,6 @@
+---
+permalink: /readme.html
+---
 
 ## Welcome to GitHub Pages
 
