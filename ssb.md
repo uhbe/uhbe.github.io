@@ -1,6 +1,5 @@
 ---
 permalink: /ssb.html
-layout: page
 ---
 
 # SSB
