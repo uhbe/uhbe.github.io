@@ -26,6 +26,7 @@ Installer bundler:
 
 Dette er delvis hentet fra [Jekyll sine installasjonsinstruksjoner for Ubuntu](https://jekyllrb.com/docs/installation/ubuntu/) . NB! Ikke gjør mer derfra!
 
+Edit 1.
 
 ### Installere Jekyll med github-oppsett
 
