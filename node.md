@@ -2,7 +2,7 @@
 permalink: /node.html
 ---
 
-# Node
+## Node
 
 Side om noder
 
