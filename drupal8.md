@@ -2,9 +2,9 @@
 title: Oppsett av Drupal 8
 ---
 
-## Beskrivelse
+## {{ page.title }}
 
-Oppsett for theme-utvikling på D8.
+Også for theme-utvikling på D8.
 
 ## Sjekke ut prosjektet
 

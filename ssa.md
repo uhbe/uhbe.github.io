@@ -1,3 +1,0 @@
-# SSA
-
-test-side

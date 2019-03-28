@@ -1,3 +1,0 @@
-# SSC
-
-Enda en test
