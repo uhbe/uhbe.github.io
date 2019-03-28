@@ -36,7 +36,8 @@ Tredje parameter til get_theme_config er ønsket default-verdi.
 
 #### theme_suggestion
 
-Dette spesifiserer hvilken template vi ønsker at skal brukes til et felt
+Dette spesifiserer hvilken template vi ønsker at skal brukes til et felt. Med dette kan vi lage generelle templater og bruke de der vi vil uten
+å behøve å opprette filer med filnavn som matcher feltene.
 
 I node-template:
 
