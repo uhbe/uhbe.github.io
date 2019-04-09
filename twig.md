@@ -60,3 +60,30 @@ NB! Format for bildefeltet på innholdstypen sin "Administrer visning" må være
 Alle filtrene kan kombineres så man kan bruke noe sånt som dette:
 
     {% raw %}{{ content.field_kort_tittel|label_display('hidden')|theme_config({"html-item-element": "p"}) }}{% endraw %}
+
+### Funksjoner
+
+#### field_label
+
+Henter ut labelen til et felt. Eksempel:
+
+    {% raw %}{{ field_label(content, "field_syff_kopi_sluttkompetanse") }}{% endraw %}
+
+
+#### get_theme_config
+
+Hente ut konfigurasjon som er satt med theme_config-filteret i en template: Eksempel:
+
+    {% raw %}{% set config_separator = get_theme_config(element, "separator", ", ") %}
+    {{ config_separator }}{% endraw %}
+
+#### not_empty_field
+
+Funksjon som returnerer true hvis feltet har en eller flere verdier og false hvis det er tomt. Eksempel:
+
+    {% raw %}{% if not_empty_field(content.field_syff_kopi_programomrade) %}
+        <section>
+            <h4>{{ field_label(content, "field_syff_kopi_programomrade") }}:</h4>
+            <p>{{ content.field_syff_kopi_programomrade }}</p>
+        </section>
+    {% endif %}{% endraw %}
