@@ -99,4 +99,36 @@ I Drupal sin Twig-dokumentasjon anbefales det å opprette en services.yml (som k
 
 ## I tilfelle feil
 
-Hvis Drupal kræsjer hardt og brutalt på grunn av php-feil så kan det være lurt å fjerne composer.lock og så kjøre en ny "composer install".
+Hvis Drupal kræsjer hardt og brutalt på grunn av php-feil så kan det være lurt å fjerne composer.lock og så kjøre en ny `composer install`.
+
+## Datakollektivet
+
+Datakollektivet settes opp i en egen database i web/sites/default/settings.php (NB! settings.php er ikke i git. Se tilsvarende fil på beta.). Det kan være lurt å hente ny versjon av Drupal-databasen fra beta og importere den før du fortsetter på oppsett av Datakollektivet.
+
+Dump datakollektivet-databasen på beta:
+
+> drush sql-dump --database=datakollektivet > /srv/tmp/beta.datakollektivet.YYYMMDD.sql
+
+NB! Det er meningen at du skal bytte ut YYYYMDD med dagens dato.
+
+Deretter gzipper du fila og laster den ned til prosjektkatalogen på din maskin, (/srv/dev8.utdanning.no eller lignende).
+
+Gå til prosjektkatalogen og så kan du opprette database lokalt og importer dumpen fra beta:
+
+> ./robo.phar dbcustom uno_data_beta uno_data beta.datakollektivet.YYYMMDD.sql.gz 
+
+NB! Vi bruker `uno_data_beta` som lokalt db-navn inntil videre pga noen litt for hardkodete sql-views.
+
+Eksempel på kodeblokk for å definere datakollektivet-databasen i settings.php:
+
+    $databases['datakollektivet']['default'] = array (
+      'database' => 'uno_data_beta',
+      'username' => 'uno_data',
+      'password' => '**********',
+      'prefix' => '',
+      'host' =>  'db,
+      'port' => '3306',
+      'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+      'driver' => 'mysql',
+    );
+
