@@ -42,9 +42,9 @@ For å unngå kollisjon med eventuelle andre ting på port 80 så kan man endre 
 
 For at dette skal fungere så må proxy og proxy_http-modulene aktiveres:
 
-sudo a2enmod proxy proxy_http
+> sudo a2enmod proxy proxy_http
 
-Aktiver deretter vhost-en. (sudo a2ensite ....)
+Aktiver deretter vhost-en. (`sudo a2ensite ....`)
 
 Etter dette så kan dev8.utdanning.no brukes uten at man behøver å tenkte på at den egentlig kjøres på port 81. Men der Drupal bruker absolutte lenker så kan :81 dukke opp.
 
@@ -65,7 +65,7 @@ Hvis du har installert Drupal 8 for utdanning.no tidligere, men ikke lasted ned 
 NB! Det er meningen at du skal bytte ut yyyymdd med dagens dato.
 
 - Lokalt (ta backup av evt. gammel db): ./robo.phar drush "sql-dump > /srv/tmp/dev8.uno.dump.yyyymmdd.dump.sql"
-- På beta2: drush sql-dump > /srv/tmp/dump.uno8_beta_yyymmdd.sql
+- På beta2: `drush sql-dump > /srv/tmp/dump.uno8_beta_yyymmdd.sql`
 - Komprimer fila (gzip filnavn)
 - Lokalt: Last ned fila fra beta og legg den i prosjektkatalogen, altså på samme sted som robo.phar.
 - Lokalt: ./robo.phar dbrestore db-dump.sql.gz
@@ -94,7 +94,7 @@ I Drupal sin Twig-dokumentasjon anbefales det å opprette en services.yml (som k
 
 ## Flushe cache
 
-./robo.phar drush cr
+> ./robo.phar drush cr
 
 
 ## I tilfelle feil
@@ -107,15 +107,15 @@ Datakollektivet settes opp i en egen database i web/sites/default/settings.php (
 
 Dump datakollektivet-databasen på beta:
 
-> drush sql-dump --database=datakollektivet > /srv/tmp/beta.datakollektivet.YYYMMDD.sql
+> {% raw %}drush sql-dump --database=datakollektivet > /srv/tmp/beta.datakollektivet.YYYYMMDD.sql{% endraw %}
 
 NB! Det er meningen at du skal bytte ut YYYYMDD med dagens dato.
 
-Deretter gzipper du fila og laster den ned til prosjektkatalogen på din maskin, (/srv/dev8.utdanning.no eller lignende).
+Deretter gzipper du fila og laster den ned til prosjektkatalogen på din maskin, (`/srv/dev8.utdanning.no/` eller lignende).
 
 Gå til prosjektkatalogen og så kan du opprette databasen lokalt og importere dumpen fra beta:
 
-> ./robo.phar dbcustom uno_data_beta uno_data beta.datakollektivet.YYYMMDD.sql.gz 
+> {% raw %}./robo.phar dbcustom uno_data_beta uno_data beta.datakollektivet.YYYMMDD.sql.gz{% endraw %}
 
 NB! Vi bruker `uno_data_beta` som lokalt db-navn inntil videre pga noen litt for hardkodete sql-views. Denne kommandoen vil be deg om å angi et passord for db-brukeren. Noter dette og legg det inn i settings.php.
 
