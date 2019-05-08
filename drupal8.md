@@ -113,11 +113,11 @@ NB! Det er meningen at du skal bytte ut YYYYMDD med dagens dato.
 
 Deretter gzipper du fila og laster den ned til prosjektkatalogen på din maskin, (/srv/dev8.utdanning.no eller lignende).
 
-Gå til prosjektkatalogen og så kan du opprette database lokalt og importer dumpen fra beta:
+Gå til prosjektkatalogen og så kan du opprette databasen lokalt og importere dumpen fra beta:
 
 > ./robo.phar dbcustom uno_data_beta uno_data beta.datakollektivet.YYYMMDD.sql.gz 
 
-NB! Vi bruker `uno_data_beta` som lokalt db-navn inntil videre pga noen litt for hardkodete sql-views.
+NB! Vi bruker `uno_data_beta` som lokalt db-navn inntil videre pga noen litt for hardkodete sql-views. Denne kommandoen vil be deg om å angi et passord for db-brukeren. Noter dette og legg det inn i settings.php.
 
 Eksempel på kodeblokk for å definere datakollektivet-databasen i settings.php:
 
