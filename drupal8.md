@@ -8,7 +8,7 @@ Også for theme-utvikling på D8.
 
 ## Sjekke ut prosjektet
 
-- git clone --recurse-submodules git@github.com:Utdanningsdirektoratet/dev.utdanning.no.git
+- git clone \-\-recurse-submodules git@github.com:Utdanningsdirektoratet/dev.utdanning.no.git
 - gå inn i sourcemappe til utdanning.no og min.utdanning.no og ta en git checkout development
 
 git checkout development bør alltid gjøres før man endrer kode i submodulene
@@ -107,7 +107,7 @@ Datakollektivet settes opp i en egen database i web/sites/default/settings.php (
 
 Dump datakollektivet-databasen på beta:
 
-> {% raw %}drush sql-dump --database=datakollektivet > /srv/tmp/beta.datakollektivet.YYYYMMDD.sql{% endraw %}
+> drush sql-dump \-\-database=datakollektivet > /srv/tmp/beta.datakollektivet.YYYYMMDD.sql
 
 NB! Det er meningen at du skal bytte ut YYYYMDD med dagens dato.
 
@@ -115,7 +115,7 @@ Deretter gzipper du fila og laster den ned til prosjektkatalogen på din maskin,
 
 Gå til prosjektkatalogen og så kan du opprette databasen lokalt og importere dumpen fra beta:
 
-> {% raw %}./robo.phar dbcustom uno_data_beta uno_data beta.datakollektivet.YYYMMDD.sql.gz{% endraw %}
+> ./robo.phar dbcustom uno_data_beta uno_data beta.datakollektivet.YYYMMDD.sql.gz
 
 NB! Vi bruker `uno_data_beta` som lokalt db-navn inntil videre pga noen litt for hardkodete sql-views. Denne kommandoen vil be deg om å angi et passord for db-brukeren. Noter dette og legg det inn i settings.php.
 
