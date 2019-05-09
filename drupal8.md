@@ -132,3 +132,5 @@ Eksempel på kodeblokk for å definere datakollektivet-databasen i settings.php:
       'driver' => 'mysql',
     );
 
+Hvis alt har gått som det skal så har du nå en oversikt over de eksterne entitetstypene på `/admin/structure/datakollektivet-entity-types`
+
