@@ -136,5 +136,16 @@ Eksempel på kodeblokk for å definere datakollektivet-databasen i settings.php:
       'driver' => 'mysql',
     );
 
+Det kan også hende at databasebrukeren ikke har blitt opprettet ordentlig så du må opprette den selv. Logg inn i databasen i databasecontaineren
+
+> ./robo.phar connect db
+> mysql
+
+og kjør følgende kommandoer:
+
+> grant all on uno_data_beta.* to 'uno_data'@'localhost' identified by 'PASSORDHER';
+> grant all on uno_data_beta.* to 'uno_data'@'utdanningno_app%' identified by 'PASSORDHER';
+
+
 Hvis alt har gått som det skal så har du nå en oversikt over de eksterne entitetstypene på `/admin/structure/datakollektivet-entity-types`
 
