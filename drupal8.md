@@ -60,11 +60,10 @@ Etter dette så kan dev8.utdanning.no brukes uten at man behøver å tenkte på 
 ## Legge inn database og filer
 
 Kort sagt: Dump database fra beta og last ned. Installer med `./robo.phar dbrestore`. Kopier fil-katalogen.
-Hvis du har installert Drupal 8 for utdanning.no tidligere, men ikke lasted ned filene så bør du også .
+Hvis du har installert Drupal 8 for utdanning.no tidligere, men ikke lasted ned filene så bør du også oppdatere databasen.
 
 - Lokalt (ta backup av evt. gammel db): `./robo.phar drush "sql-dump > /srv/tmp/dev8.uno.dump.sql"`
-- På beta2: `drush sql-dump > /srv/tmp/dump.uno8_beta.sql`
-- Komprimer fila (gzip filnavn)
+- På beta2: `drush sql-dump | gzip > /srv/tmp/dump.uno8_beta.sql.gz`
 - Lokalt: Last ned fila fra beta og legg den i prosjektkatalogen, altså på samme sted som robo.phar.
 - Lokalt: `./robo.phar dbrestore dump.uno8_beta.sql.gz`
 - På beta2: `tar -zcvf /srv/tmp/beta.d8.files.tar.gz files` (hvis du står i web/sites/default-katalogen)
@@ -72,6 +71,13 @@ Hvis du har installert Drupal 8 for utdanning.no tidligere, men ikke lasted ned 
 - Lokalt: `cd source/utdanning.no/web/sites/default`
 - Lokalt: `mv files filesold` (så du har de gamle filene i tilfelle noe skjærer seg)
 - Lokalt: `tar -xzvf /srv/tmp/beta.d8.files.tar.gz` (juster sti til fildump hvis nødvendig)
+
+## Alternativ uten x_-tabeller
+
+Datakollektivet inneholder en rekke tabeller prefikset med 'x_' og disse brukes ikke i Drupal. For å lage en dump av databasen uten disse tabellene kan følgende kommando brukes
+
+- `drush sqlq --database=datakollektivet 'SELECT table_name FROM information_schema.tables WHERE table_schema = "uno_data_beta" AND table_name NOT like "x_%"' | tr '\n' ','  | xargs -I % drush sql-dump --database=datakollektivet --tables-list='%'`
+
 
 
 ## Theme-utvikling
@@ -105,11 +111,11 @@ Datakollektivet settes opp i en egen database i web/sites/default/settings.php (
 
 Dump datakollektivet-databasen på beta:
 
-> drush sql-dump \-\-database=datakollektivet > /srv/tmp/beta.datakollektivet.dump.sql
+> drush sql-dump \-\-database=datakollektivet | gzip > /srv/tmp/beta.datakollektivet.dump.sql.gz
 
 NB! Sjekk at det er nok ledig diskplass. Slett eventuelt noen gamle db-dumper først.
 
-Deretter gzipper du fila og laster den ned til prosjektkatalogen på din maskin, (`/srv/dev8.utdanning.no/` eller lignende).
+Deretter laster du ned fila til prosjektkatalogen på din maskin, (`/srv/dev8.utdanning.no/` eller lignende).
 
 Gå til prosjektkatalogen og så kan du opprette databasen lokalt og importere dumpen fra beta:
 
