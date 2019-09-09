@@ -76,7 +76,7 @@ Hvis du har installert Drupal 8 for utdanning.no tidligere, men ikke lasted ned 
 
 Datakollektivet inneholder en rekke tabeller prefikset med 'x_' og disse brukes ikke i Drupal. For å lage en dump av databasen uten disse tabellene kan følgende kommando brukes
 
-- `drush sqlq --database=datakollektivet 'SELECT table_name FROM information_schema.tables WHERE table_schema = "uno_data_beta" AND table_name NOT like "x_%"' | tr '\n' ','  | xargs -I % drush sql-dump --database=datakollektivet --tables-list='%'`
+- `drush sqlq --database=datakollektivet 'SELECT table_name FROM information_schema.tables WHERE table_schema = "uno_data_beta" AND table_name NOT like "x_%"' | tr '\n' ','  | xargs -I % drush sql-dump --database=datakollektivet --tables-list='%' | gzip > /srv/tmp/beta.datakollektivet.dump.sql.gz`
 
 
 
@@ -111,7 +111,7 @@ Datakollektivet settes opp i en egen database i web/sites/default/settings.php (
 
 Dump datakollektivet-databasen på beta:
 
-> drush sql-dump \-\-database=datakollektivet | gzip > /srv/tmp/beta.datakollektivet.dump.sql.gz
+> drush sql-dump \-\-database=datakollektivet \| gzip > /srv/tmp/beta.datakollektivet.dump.sql.gz
 
 NB! Sjekk at det er nok ledig diskplass. Slett eventuelt noen gamle db-dumper først.
 
