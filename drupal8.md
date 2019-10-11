@@ -62,7 +62,7 @@ Etter dette så kan dev8.utdanning.no brukes uten at man behøver å tenkte på 
 Kort sagt: Dump database fra beta og last ned. Installer med `./robo.phar dbrestore`. Kopier fil-katalogen.
 Hvis du har installert Drupal 8 for utdanning.no tidligere, men ikke lasted ned filene så bør du også oppdatere databasen.
 
-- Lokalt (ta backup av evt. gammel db): `./robo.phar drush "sql-dump > /srv/tmp/dev8.uno.dump.sql"`
+- Lokalt (ta backup av evt. gammel db): `./robo.phar drush "sql-dump | gzip > /srv/tmp/dev8.uno.dump.sql.gz"`
 - På beta2: `drush sql-dump | gzip > /srv/tmp/dump.uno8_beta.sql.gz`
 - Lokalt: Last ned fila fra beta og legg den i prosjektkatalogen, altså på samme sted som robo.phar.
 - Lokalt: `./robo.phar dbrestore dump.uno8_beta.sql.gz`
@@ -71,13 +71,6 @@ Hvis du har installert Drupal 8 for utdanning.no tidligere, men ikke lasted ned 
 - Lokalt: `cd source/utdanning.no/web/sites/default`
 - Lokalt: `mv files filesold` (så du har de gamle filene i tilfelle noe skjærer seg)
 - Lokalt: `tar -xzvf /srv/tmp/beta.d8.files.tar.gz` (juster sti til fildump hvis nødvendig)
-
-## Alternativ uten x_-tabeller
-
-Datakollektivet inneholder en rekke tabeller prefikset med 'x_' og disse brukes ikke i Drupal. For å lage en dump av databasen uten disse tabellene kan følgende kommando brukes
-
-- `drush sqlq --database=datakollektivet 'SELECT table_name FROM information_schema.tables WHERE table_schema = "uno_data_beta" AND table_name NOT like "x_%"' | tr '\n' ','  | xargs -I % drush sql-dump --database=datakollektivet --tables-list='%' | gzip > /srv/tmp/beta.datakollektivet.dump.sql.gz`
-
 
 
 ## Theme-utvikling
@@ -91,7 +84,7 @@ Du kan nå se nettstedet på localhost:3000 (autoppdaterer ved css- og js-endrin
 
 ## Twig
 
-Følg instruksjonene på https://www.drupal.org/node/2598914 inntil "Use Drupal Console development mode" for å deaktivere mest mulig cache. Hvis du ikke gjør dette så blir du snart lei av å flushe cachen.
+Følg instruksjonene på [https://www.drupal.org/node/2598914](https://www.drupal.org/node/2598914) inntil "Use Drupal Console development mode" for å deaktivere mest mulig cache. Hvis du ikke gjør dette så blir du snart lei av å flushe cachen.
 
 I Drupal sin Twig-dokumentasjon anbefales det å opprette en services.yml (som kopi av sites/default/default.services.yml) og endre twig.config i denne. Dette fungerer bare delvis.
 
@@ -111,9 +104,9 @@ Datakollektivet settes opp i en egen database i web/sites/default/settings.php (
 
 Dump datakollektivet-databasen på beta:
 
-> drush sql-dump \-\-database=datakollektivet \| gzip > /srv/tmp/beta.datakollektivet.dump.sql.gz
+> drush sql-dump \-\-database=datakollektivet \-\-tables-list=\'red_korrigering,z_undervisningssteder,z_fagskole_tilbud,z_folkehogskole_tilbud,z_so_kravkoder,z_organisasjoner,z_ssb_styrk98,z_so_uh,z_uh_tilbud,z_vgs_tilbud,z_annen_utdanning\' \| gzip > /srv/tmp/beta.datakollektivet.dump.minimal.sql.gz
 
-NB! Sjekk at det er nok ledig diskplass. Slett eventuelt noen gamle db-dumper først.
+Argumentet `--tables-list` kan droppes men da får du en unødvendig stor database for Drupal-utviklingen som vil ta lang tid å importere. Sjekk at det er nok ledig diskplass hvis du vil dumpe hele Datakollektivet. Slett eventuelt noen gamle db-dumper først.
 
 Deretter laster du ned fila til prosjektkatalogen på din maskin, (`/srv/dev8.utdanning.no/` eller lignende).
 
@@ -149,3 +142,26 @@ og kjør følgende kommandoer:
 
 Hvis alt har gått som det skal så har du nå en oversikt over de eksterne entitetstypene på `/admin/structure/datakollektivet-entity-types`
 
+
+## Sjekke ut ny kode og oppdatere konfigurasjon
+
+- `git pull`
+
+
+- `./robo.phar composer "install --dry-run"`
+- `./robo.phar composer "install"`
+
+`composer install` kan behøves i tilfelle nye moduler er lagt til i `composer.json`. Hvis dette ikke gjøres kan det skape problemer for konfigurasjonen. Bruk gjerne `--dry-run` først for å sjekke hva som kommer til å skje.
+
+- `./robo.phar drush "sql-dump | gzip > /srv/tmp/beta.d8.dump.sql.gz"`
+
+Det kan oppstå problemer ved oppdatering av konfigurasjon. En backup av databasen gir deg en enkel mulighet til å rulle tilbake en eventuell mislykket konfigurasjonsimport.
+
+- `./robo.phar drush "cim"`
+
+Import av konfigurasjon gjøres best med Drush, men GUI (/admin/config/development/configuration) egner seg bedre til å vise forskjeller mellom gammel og ny konfigurasjon.
+
+
+- `./robo.phar drush "cr"`
+
+Som alltid, flushe cachen.
