@@ -140,7 +140,7 @@ og kjør følgende kommandoer:
 > grant all on uno_data_beta.* to 'uno_data'@'utdanningno_app%' identified by 'PASSORDHER';<br/>
 > flush privileges;
 
-I tillegg så kan det oppstå problemer med views som kjører databasespørringer på tvers av Drupal sin database og Datakollektivet. Dette kan fikses med følgende kommandoer:
+I tillegg så kan det oppstå problemer med views som kjører databasespørringer på tvers av Drupal sin database og Datakollektivet. For å fikse dette kan vi gi Drupal sin databasebruker SELECT-tilgang til Datakollektivet sin database:
 
 > GRANT SELECT ON 'uno_data_beta'.* TO 'uno'@'localhost';<br/>
 > GRANT SELECT ON 'uno_data_beta'.* TO 'uno'@'utdanningno_app%';<br/>
