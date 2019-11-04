@@ -131,14 +131,22 @@ Eksempel på kodeblokk for å definere datakollektivet-databasen i settings.php:
 
 Det kan også hende at databasebrukeren ikke har blitt opprettet ordentlig så du må opprette den selv. Logg inn i databasen i databasecontaineren
 
-> ./robo.phar connect db
+> ./robo.phar connect db \-\-root<br/>
 > mysql
 
 og kjør følgende kommandoer:
 
-> grant all on uno_data_beta.* to 'uno_data'@'localhost' identified by 'PASSORDHER';
-> grant all on uno_data_beta.* to 'uno_data'@'utdanningno_app%' identified by 'PASSORDHER';
+> grant all on uno_data_beta.* to 'uno_data'@'localhost' identified by 'PASSORDHER';<br/>
+> grant all on uno_data_beta.* to 'uno_data'@'utdanningno_app%' identified by 'PASSORDHER';<br/>
+> flush privileges;
 
+I tillegg så kan det oppstå problemer med views som kjører databasespørringer på tvers av Drupal sin database og Datakollektivet. Dette kan fikses med følgende kommandoer:
+
+> GRANT SELECT ON 'uno_data_beta'.* TO 'uno'@'localhost';<br/>
+> GRANT SELECT ON 'uno_data_beta'.* TO 'uno'@'utdanningno_app%';<br/>
+> flush privileges;
+
+Tilpass databasenavn og brukernavn ved behov.
 
 Hvis alt har gått som det skal så har du nå en oversikt over de eksterne entitetstypene på `/admin/structure/datakollektivet-entity-types`
 
