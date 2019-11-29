@@ -150,6 +150,20 @@ Tilpass databasenavn og brukernavn ved behov.
 
 Hvis alt har gått som det skal så har du nå en oversikt over de eksterne entitetstypene på `/admin/structure/datakollektivet-entity-types`
 
+## Min side
+
+Drush og composer-kommandoene til robo kan ta switchen `--minside` for å spesifisere at det er minside vi vil gjøre noe med.
+
+- Lokalt: `./robo.phar installminside`
+- Lokalt: Legg inn `dev.min.utdanning.no` i `/etc/hosts`
+- Lokalt: Sett opp `vhost` for `dev.min.utdanning.no`
+- Lokalt: Åpne `dev.min.utdanning.no` i en nettleser og følg instruksjonene. Bruk db-oppsett fra `minside_dbpwfile.txt`
+- Beta: Gå inn i minside-katalogen og dump databasen: `drush sql-dump | gzip > /srv/tmp/beta.d8.min.dump.sql.gz`
+- Lokalt: Last ned databasen fra beta med scp eller lignende.
+- Lokalt: Importer databasen med `./robo.phar dbrestore --minside beta.d8.min.dump.sql.gz`
+- Importer filer (se generelt oppsett for Drupal 8)
+
+
 
 ## Sjekke ut ny kode og oppdatere konfigurasjon
 
