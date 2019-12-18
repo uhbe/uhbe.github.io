@@ -6,7 +6,7 @@ title: Oppsett av Drupal 8
 
 ## Sjekke ut prosjektet
 
-- `git clone \-\-recurse-submodules git@github.com:Utdanningsdirektoratet/dev.utdanning.no.git`
+- `git clone --recurse-submodules git@github.com:utdanningno/dev.utdanning.no.git`
 - gå inn i sourcemappa og så inn i utdanning.no og min.utdanning.no og ta en `git checkout development`
 
 `git checkout development` bør alltid gjøres før man endrer kode i submodulene
