@@ -128,6 +128,7 @@ Eksempel på kodeblokk for å definere datakollektivet-databasen i settings.php:
       'port' => '3306',
       'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
       'driver' => 'mysql',
+      'collation' => 'utf8mb4_danish_ci',
     );
 
 Det kan også hende at databasebrukeren ikke har blitt opprettet ordentlig så du må opprette den selv. Logg inn i databasen i databasecontaineren
