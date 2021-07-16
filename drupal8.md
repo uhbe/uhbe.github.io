@@ -7,7 +7,8 @@ title: Oppsett av Drupal 8
 ## Sjekke ut prosjektet
 
 - `git clone --recurse-submodules git@github.com:utdanningno/dev.utdanning.no.git`
-- gå inn i sourcemappa og så inn i utdanning.no og min.utdanning.no og ta en `git checkout development`
+- `git checkout development` for å bruke riktig branch.
+- gå inn i sourcemappa og så inn i utdanning.no og min.utdanning.no og ta en `git checkout development` der også.
 
 `git checkout development` bør alltid gjøres før man endrer kode i submodulene
 
@@ -104,7 +105,7 @@ Datakollektivet settes opp i en egen database i web/sites/default/settings.php (
 
 Dump datakollektivet-databasen på beta:
 
-> drush sql-dump \-\-database=datakollektivet \-\-tables-list=\'red_korrigering,z_undervisningssteder,z_fagskole_tilbud,z_folkehogskole_tilbud,z_so_kravkoder,z_organisasjoner,z_ssb_styrk98,z_so_uh,z_uh_tilbud,z_vgs_tilbud,z_annen_utdanning\' \| gzip > /srv/tmp/beta.datakollektivet.dump.minimal.sql.gz
+> drush sql-dump \-\-database=datakollektivet \-\-tables-list=\'red_korrigering,z_undervisningssteder,z_fagskole_tilbud,z_folkehogskole_tilbud,z_so_kravkoder,z_organisasjoner,z_ssb_styrk98,z_so_uh,z_uh_tilbud,z_vgs_tilbud,z_annen_utdanning,z_bedrifter,mv_*\' \| gzip > /srv/tmp/beta.datakollektivet.dump.minimal.sql.gz
 
 Argumentet `--tables-list` kan droppes men da får du en unødvendig stor database for Drupal-utviklingen som vil ta lang tid å importere. Sjekk at det er nok ledig diskplass hvis du vil dumpe hele Datakollektivet. Slett eventuelt noen gamle db-dumper først.
 
