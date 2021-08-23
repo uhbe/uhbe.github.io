@@ -21,23 +21,23 @@ title: Oppsett av Drupal 8
 - For Mac: Installer Docker Desktop
 - For Mac: Kildekoden må være sjekket ut i en mappe som ligger inne i 'File sharing'-innstillingene til Docker. Hvis ikke så får ikke Mac mountet filsystemet inne i Docker.
 - `./robo.phar install`
-- NB! Hvis du har Apache eller noe annet kjørende på port 80 så vil robo-installasjonen feile. Stopp Apache eller endre varnish.ports i docker-compose.yml til f.eks. 81:80.
+- NB! Hvis du har Apache eller noe annet kjørende på port 80 så vil robo-installasjonen feile. Stopp Apache eller endre `varnish.ports` i `docker-compose.yml` til f.eks. `81:80`.
 
 
 ## Apache-oppsett
 
 Det avhenger også av eksisterende oppsett og portkonfigurasjon. Docker vil i utgangspunktet ta port 80 så det kræsjer fort med eksisterende oppsett.
 
-- Legg inn dev8.utdanning.no i /etc/hosts
+- Legg inn dev.utdanning.no i /etc/hosts
 
 ## Alternativt Apache-oppsett
 
-For å unngå kollisjon med eventuelle andre ting på port 80 så kan man endre varnish.ports i docker-compose.yml til 81:80 og bruke det følgende i en vhost-fil til Apache:
+For å unngå kollisjon med eventuelle andre ting på port 80 så kan man endre `varnish.ports` i `docker-compose.yml` til `81:80` og bruke det følgende i en vhost-fil til Apache:
 <pre>
 <VirtualHost *:80>
-    ServerName dev8.utdanning.no
-    ProxyPass "/"  "http://dev8.utdanning.no:81/"
-    ProxyPassReverse "/"  "http://dev8.utdanning.no:81/"
+    ServerName dev.utdanning.no
+    ProxyPass "/"  "http://dev.utdanning.no:81/"
+    ProxyPassReverse "/"  "http://dev.utdanning.no:81/"
 </VirtualHost>
 </pre>
 
@@ -47,32 +47,50 @@ For at dette skal fungere så må proxy og proxy_http-modulene aktiveres:
 
 Aktiver deretter vhost-en. (`sudo a2ensite ....`)
 
-Etter dette så kan dev8.utdanning.no brukes uten at man behøver å tenkte på at den egentlig kjøres på port 81. Men der Drupal bruker absolutte lenker så kan :81 dukke opp.
+Etter dette så kan dev.utdanning.no brukes uten at man behøver å tenkte på at den egentlig kjøres på port 81. Men der Drupal bruker absolutte lenker så kan :81 dukke opp.
 
 
 
 ## Drupal 8
 
-Åpne dev8.utdanning.no i en nettleser og følg instruksjonene.
+Åpne dev.utdanning.no i en nettleser og følg instruksjonene.
 
-- Bruk db-oppsett fra dbpwfile.txt
+- Bruk db-oppsett fra `dbpwfile.txt`
 
+Sjekk deretter i `web/sites/default/settings.php` at du bruker `../config/sync` som mappe for synkronisering av konfigurasjon og ikke en mappe med et tilfeldig navn som er generert av Drupal-installasjonen. Det kan se ut som dette:
+
+`$settings['config_sync_directory'] = '../config/sync';`
+
+Eventuelle linjer med tilfeldig navn for synkroniseringsmappa bør slettes. 
+
+For dev-miljøet så skal også `config split` settes opp. Bruk følgende linjer i din `settings.local.php`
+
+<pre>
+// Configure config split directory
+$config['config_split.config_split.dev']['status'] = 1;
+$config['config_split.config_split.beta']['status'] = 0;
+$config['config_split.config_split.prod']['status'] = 0;
+</pre>
 
 ## Legge inn database og filer
 
 Kort sagt: Dump database fra beta og last ned. Installer med `./robo.phar dbrestore`. Kopier fil-katalogen.
 Hvis du har installert Drupal 8 for utdanning.no tidligere, men ikke lasted ned filene så bør du også oppdatere databasen.
 
-- Lokalt (ta backup av evt. gammel db): `./robo.phar drush "sql-dump | gzip > /srv/tmp/dev8.uno.dump.sql.gz"`
-- På beta2: `drush sql-dump | gzip > /srv/tmp/dump.uno8_beta.sql.gz`
+- Lokalt (ta backup av evt. gammel db): `./robo.phar drush:utd "sql-dump | gzip > /srv/tmp/dev.uno.dump.sql.gz"`
+- På beta2: `mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_beta -u uno -p | gzip > /srv/tmp/dump.uno8_beta.sql.gz`.
 - Lokalt: Last ned fila fra beta og legg den i prosjektkatalogen, altså på samme sted som robo.phar.
 - Lokalt: `./robo.phar dbrestore dump.uno8_beta.sql.gz`
+
+Vi bruker modulen `stage_file_proxy` i dev-miljøet og har satt den opp til å hente filer fra beta ved behov, men hvis du vil ha en fullstendig lokal files-katalog så kan du gjøre følgende:
+
 - På beta2: `tar -zcvf /srv/tmp/beta.d8.files.tar.gz files` (hvis du står i web/sites/default-katalogen)
 - Lokalt: last ned fil-dumpen (f.eks. med scp) og legg den et sted du får tak i den
 - Lokalt: `cd source/utdanning.no/web/sites/default`
 - Lokalt: `mv files filesold` (så du har de gamle filene i tilfelle noe skjærer seg)
 - Lokalt: `tar -xzvf /srv/tmp/beta.d8.files.tar.gz` (juster sti til fildump hvis nødvendig)
 
+Etter at du har installert databasen kan du sjekke at synkroniseringsmappa er riktig satt opp ved å kjøre kommandoen `./robo.phar drush:utd "cim"`. Du skal da ikke få noen endringer av betydning så lenge du har brukt en fersk database fra beta. Hvis det blir en omfattende liste med konfigurasjon som skal slettes så tyder det på at synkroniseringsmappa (`../config/sync`) ikke er satt opp riktig.
 
 ## Theme-utvikling
 
@@ -80,7 +98,7 @@ Hvis du har installert Drupal 8 for utdanning.no tidligere, men ikke lasted ned 
 - `npm install`
 - `npx gulp`
 
-Du kan nå se nettstedet på localhost:3000 (autoppdaterer ved css- og js-endringer) eller dev8.utdanning.no. Det er lurt å være innlogget for da er du mindre utsatt for Drupal-cache.
+Du kan nå se nettstedet på localhost:3000 (autoppdaterer ved css- og js-endringer) eller dev.utdanning.no. Det er lurt å være innlogget for da er du mindre utsatt for Drupal-cache.
 
 
 ## Twig
@@ -92,7 +110,7 @@ I Drupal sin Twig-dokumentasjon anbefales det å opprette en services.yml (som k
 
 ## Flushe cache
 
-> ./robo.phar drush cr
+> ./robo.phar drush:utd cr
 
 
 ## I tilfelle feil
@@ -105,11 +123,11 @@ Datakollektivet settes opp i en egen database i web/sites/default/settings.php (
 
 Dump datakollektivet-databasen på beta:
 
-> drush sql-dump \-\-database=datakollektivet \-\-tables-list=\'red_korrigering,z_undervisningssteder,z_fagskole_tilbud,z_folkehogskole_tilbud,z_so_kravkoder,z_organisasjoner,z_ssb_styrk98,z_so_uh,z_uh_tilbud,z_vgs_tilbud,z_annen_utdanning,z_bedrifter,mv_*\' \| gzip > /srv/tmp/beta.datakollektivet.dump.minimal.sql.gz
+> mysql  -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p -N -e 'show tables like "mv\_%"' \| xargs mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p  red_korrigering z_undervisningssteder z_fagskole_tilbud z_folkehogskole_tilbud z_so_kravkoder z_organisasjoner z_ssb_styrk98 z_so_uh z_uh_tilbud z_vgs_tilbud z_annen_utdanning z_bedrifter z_so_fs \| gzip > /srv/tmp/beta.datakollektivet.dump.sql.gz
 
-Argumentet `--tables-list` kan droppes men da får du en unødvendig stor database for Drupal-utviklingen som vil ta lang tid å importere. Sjekk at det er nok ledig diskplass hvis du vil dumpe hele Datakollektivet. Slett eventuelt noen gamle db-dumper først.
+Dette vil dumpe bare de tabellene fra datakollektivet som brukes av utdanning.no
 
-Deretter laster du ned fila til prosjektkatalogen på din maskin, (`/srv/dev8.utdanning.no/` eller lignende).
+Deretter laster du ned fila til prosjektkatalogen på din maskin, (`/srv/dev.utdanning.no/` eller lignende).
 
 Gå til prosjektkatalogen og så kan du opprette databasen lokalt og importere dumpen fra beta:
 
@@ -177,11 +195,11 @@ Drush og composer-kommandoene til robo kan ta switchen `--minside` for å spesif
 
 `composer install` kan behøves i tilfelle nye moduler er lagt til i `composer.json`. Hvis dette ikke gjøres kan det skape problemer for konfigurasjonen. Bruk gjerne `--dry-run` først for å sjekke hva som kommer til å skje.
 
-- `./robo.phar drush "sql-dump | gzip > /srv/tmp/beta.d8.dump.sql.gz"`
+- `./robo.phar drush:utd "sql-dump | gzip > /srv/tmp/beta.d8.dump.sql.gz"`
 
 Det kan oppstå problemer ved oppdatering av konfigurasjon. En backup av databasen gir deg en enkel mulighet til å rulle tilbake en eventuell mislykket konfigurasjonsimport.
 
-- `./robo.phar drush "cim"`
+- `./robo.phar drush:utd "cim"`
 
 Import av konfigurasjon gjøres best med Drush, men GUI (/admin/config/development/configuration) egner seg bedre til å vise forskjeller mellom gammel og ny konfigurasjon.
 
