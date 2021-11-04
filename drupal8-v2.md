@@ -1,5 +1,5 @@
 ---
-title: Oppsett av Drupal 8 (v2, komplett?)
+title: Oppsett av Drupal 8
 ---
 
 ## {{ page.title }}
@@ -87,8 +87,8 @@ Du kan enten eksportere databasene ved hjelp av et skript på prod-serveren elle
 - ssh til beta-serveren.
 - `sudo -u uno -i`
 - `cd /srv/beta.utdanning.no`
-- utdanning.no: > `mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_beta -u uno -p | gzip > /srv/tmp/beta.utdanning.no.yyyymmdd.sql.gz`
-- utdanning.no-datakollektivet: > `mysql -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p -N -e 'show tables like "mv\_%"' | xargs mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p  red_korrigering x_geonorge_kommuner z_undervisningssteder z_fagskole_tilbud z_folkehogskole_tilbud z_so_kravkoder z_organisasjoner z_ssb_nus z_ssb_styrk98 z_so_uh z_uh_tilbud z_vgs_tilbud z_annen_utdanning z_bedrifter z_so_fs z_privat_vgs_tilbud | gzip > /srv/tmp/beta.dk-lite.yyymmdd.sql.gz`
+- utdanning.no: `mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_beta -u uno -p | gzip > /srv/tmp/beta.utdanning.no.yyyymmdd.sql.gz`
+- utdanning.no-datakollektivet: `mysql -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p -N -e 'show tables like "mv\_%"' | xargs mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p  red_korrigering x_geonorge_kommuner z_undervisningssteder z_fagskole_tilbud z_folkehogskole_tilbud z_so_kravkoder z_organisasjoner z_ssb_nus z_ssb_styrk98 z_so_uh z_uh_tilbud z_vgs_tilbud z_annen_utdanning z_bedrifter z_so_fs z_privat_vgs_tilbud | gzip > /srv/tmp/beta.dk-lite.yyymmdd.sql.gz`
 - `cd /srv/beta.min.utdanning.no`
 - minside: `mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net minside_beta -u uno -p | gzip > /srv/tmp/beta.min.utdanning.no.yyyymmdd.sql.gz`
 - `cd /srv/beta.data.utdanning.no`
@@ -96,7 +96,7 @@ Du kan enten eksportere databasene ved hjelp av et skript på prod-serveren elle
 
 #### 6.2 Eksportere databaser fra prod (skriptet)
 
-Vi har et skript for database-eskport som per nå bare er tilgjengelig fra en tmp-katalog på prod-serveren
+Vi har et skript for database-eksport som per nå bare er tilgjengelig fra en tmp-katalog på prod-serveren.
 
 > cd /srv/tmp/backup-command/
 
@@ -284,5 +284,11 @@ Litt opprydning for å blidgjøre Drupal og for å synkronisere dev-nettstedene 
 ./robo.phar drush:ms cr
 </pre>
 
-
 Hvis `drush cim` foreslår omfattende endringer så tyder det på at noe har blitt feil. Endringene du skal få er i hovedsak forskjeller mellom beta/prod- og dev-miljø.
+
+Sjekk deretter at følgende nettsteder er operative:
+
+- [http://dev.utdanning.no](http://dev.utdanning.no)
+- [http://dev.min.utdanning.no](http://dev.min.utdanning.no)
+- [http://dev.data.utdanning.no](http://dev.data.utdanning.no)
+
