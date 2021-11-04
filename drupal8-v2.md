@@ -139,6 +139,7 @@ $databases['datakollektivet']['default'] = [
 $settings['config_sync_directory'] = '../config/sync';
 
 $config['config_split.config_split.dev']['status'] = 1;
+$config['config_split.config_split.alfa']['status'] = 0;
 $config['config_split.config_split.beta']['status'] = 0;
 $config['config_split.config_split.prod']['status'] = 0;
 </pre>
@@ -168,6 +169,7 @@ $databases['default']['default'] = [
 $settings['config_sync_directory'] = '../config/sync';
 
 $config['config_split.config_split.dev']['status'] = 1;
+$config['config_split.config_split.alfa']['status'] = 0;
 $config['config_split.config_split.beta']['status'] = 0;
 $config['config_split.config_split.prod']['status'] = 0;
 </pre>
@@ -175,9 +177,13 @@ $config['config_split.config_split.prod']['status'] = 0;
 
 ##### dev.data.utdanning.no
 
-Endringer skal gjøres i `source/data.utdanning.no/web/sites/default/settings.php`
+Endringer skal gjøres i `source/data.utdanning.no/web/sites/default/settings.php` og du behøver verdier fra fila `data_dbpwfile.txt`.
 
-Legg inn database-adapteren fra `source/utdanning.no/web/sites/default/settings.php` som har navn `datakollektivet`.
+Legg inn en tilfeldig tekst i `$settings['hash_salt']`, f.eks.
+
+> $settings['hash_salt'] = 'skldzfhnlcahegmhrmdlckggmaudhrcghugl84y8gae4cgmloz8glmo8';
+
+Legg inn database-adapteren fra `source/utdanning.no/web/sites/default/settings.php` som har navn `datakollektivet`
 
 <pre>
 $databases['datakollektivet']['default'] = [
@@ -191,6 +197,27 @@ $databases['datakollektivet']['default'] = [
   'collation' => 'utf8mb4_danish_ci',
 ];
 </pre>
+
+Legg inn dette nederst i settings-fila:
+
+<pre>
+$databases['default']['default'] = [
+  'database' => 'Database fra data_dbpwfile.txt',
+  'username' => 'User fra data_dbpwfile.txt',
+  'password' => 'Password fra data_dbpwfile.txt',
+  'host' => 'Host fra data_dbpwfile.txt',
+  'port' => '3306',
+  'driver' => 'mysql',
+  'prefix' => '',
+];
+
+$config['config_split.config_split.dev']['status'] = 1;
+$config['config_split.config_split.stathis_local']['status'] = 0;
+$config['config_split.config_split.alfa']['status'] = 0;
+$config['config_split.config_split.beta']['status'] = 0;
+$config['config_split.config_split.prod']['status'] = 0;
+</pre>
+
 
 ### Importere databaser
 
