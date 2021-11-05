@@ -213,7 +213,7 @@ $config['config_split.config_split.prod']['status'] = 0;
 
 ##### dev.data.utdanning.no
 
-Endringer skal gjøres i `source/data.utdanning.no/web/sites/default/settings.php` og du behøver verdier fra fila `data_dbpwfile.txt`.
+Endringer skal gjøres i `source/data.utdanning.no/web/sites/default/settings.php`.
 
 Legg inn database-adapteren (uten å endre passord) fra `source/utdanning.no/web/sites/default/settings.php` som har navn `datakollektivet`. Denne databasen blir delt mellom dev.utdanning.no og dev.data.utdanning.no.
 
