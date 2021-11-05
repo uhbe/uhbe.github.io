@@ -175,6 +175,7 @@ $databases['datakollektivet']['default'] = [
 $settings['config_sync_directory'] = '../config/sync';
 
 $config['config_split.config_split.dev']['status'] = 1;
+$config['config_split.config_split.alfa']['status'] = 0;
 $config['config_split.config_split.beta']['status'] = 0;
 $config['config_split.config_split.prod']['status'] = 0;
 </pre>
@@ -204,6 +205,7 @@ $databases['default']['default'] = [
 $settings['config_sync_directory'] = '../config/sync';
 
 $config['config_split.config_split.dev']['status'] = 1;
+$config['config_split.config_split.alfa']['status'] = 0;
 $config['config_split.config_split.beta']['status'] = 0;
 $config['config_split.config_split.prod']['status'] = 0;
 </pre>
@@ -211,7 +213,7 @@ $config['config_split.config_split.prod']['status'] = 0;
 
 ##### dev.data.utdanning.no
 
-Endringer skal gjøres i `source/data.utdanning.no/web/sites/default/settings.php`
+Endringer skal gjøres i `source/data.utdanning.no/web/sites/default/settings.php`.
 
 Legg inn database-adapteren (uten å endre passord) fra `source/utdanning.no/web/sites/default/settings.php` som har navn `datakollektivet`. Denne databasen blir delt mellom dev.utdanning.no og dev.data.utdanning.no.
 
@@ -228,7 +230,9 @@ $databases['datakollektivet']['default'] = [
 ];
 </pre>
 
+
 #### 8.2 Alternativ 2: Via nettleseren
+
 
 Dette kan gjøres ved å gå til dev-nettstedene dine:
 
