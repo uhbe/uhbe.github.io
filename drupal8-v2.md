@@ -92,7 +92,7 @@ Du kan enten eksportere databasene ved hjelp av et skript på prod-serveren elle
 - `cd /srv/beta.min.utdanning.no`
 - minside: `mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net minside_beta -u uno -p | gzip > /srv/tmp/beta.min.utdanning.no.yyyymmdd.sql.gz`
 - `cd /srv/beta.data.utdanning.no`
-- data: `mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net beta_data_utdanning_no -u beta_data_utdanning_no -p | gzip > /srv/tmp/beta.min.utdanning.no.yyyymmdd.sql.gz`
+- data: `mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net beta_data_utdanning_no -u beta_data_utdanning_no -p | gzip > /srv/tmp/beta.dk-lite.utdanning.no.yyyymmdd.sql.gz`
 
 #### 6.2 Eksportere databaser fra prod (skriptet)
 
