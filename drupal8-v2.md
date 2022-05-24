@@ -88,7 +88,7 @@ Du kan enten eksportere databasene ved hjelp av et skript på prod-serveren elle
 - `sudo -u uno -i`
 - `cd /srv/beta.utdanning.no`
 - utdanning.no: `mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_beta -u uno -p | gzip > /srv/tmp/beta.utdanning.no.yyyymmdd.sql.gz`
-- utdanning.no-datakollektivet: `mysql -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p -N -e 'show tables like "mv\_%"' | xargs mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p  red_korrigering x_geonorge_kommuner z_undervisningssteder z_fagskole_tilbud z_folkehogskole_tilbud z_so_kravkoder z_organisasjoner z_ssb_nus z_ssb_styrk98 z_so_uh z_uh_tilbud z_vgs_tilbud z_annen_utdanning z_bedrifter z_so_fs z_privat_vgs_tilbud | gzip > /srv/tmp/beta.dk-lite.yyymmdd.sql.gz`
+- utdanning.no-datakollektivet: `mysql -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p -N -e 'show tables like "mv\_%"' | xargs mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net uno_data_beta -u uno_data -p  red_korrigering x_geonorge_kommuner z_undervisningssteder z_fagskole_tilbud z_folkehogskole_tilbud z_so_kravkoder z_organisasjoner z_ssb_nus z_ssb_styrk98 z_so_uh z_uh_tilbud z_vgs_tilbud z_annen_utdanning z_bedrifter z_so_fs z_privat_vgs_tilbud z_evu_tilbud | gzip > /srv/tmp/beta.dk-lite.yyymmdd.sql.gz`
 - `cd /srv/beta.min.utdanning.no`
 - minside: `mysqldump --column-statistics=0 -h utdanning-dbaas01-beta.iktsenteret.c.bitbit.net minside_beta -u uno -p | gzip > /srv/tmp/beta.min.utdanning.no.yyyymmdd.sql.gz`
 - `cd /srv/beta.data.utdanning.no`
