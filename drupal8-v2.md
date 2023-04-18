@@ -266,7 +266,71 @@ Denne kommandoen ber deg om et passord. Bruk passordet du la inn i oppsettet til
 > ./robo.phar db:restore-data beta.data.utdanning.no.yyyymmdd.sql.gz
 
 
-### 10. Avslutning
+### 10. Solr-oppsett
+
+Legg til rette for bruk av settings.local.php med å legge inn følgende i `source/utdanning.no/web/sites/default/settings.php`:
+
+<pre>
+if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
+  include $app_root . '/' . $site_path . '/settings.local.php';
+}
+</pre>
+
+Deretter så kan du overstyre Drupal sine Solr-innstillinger med følgende i `settings.local.php`:
+
+<pre>
+$config['search_api.server.jobbkompass'] = [
+  'backend_config' => [
+    'connector_config' => [
+      'host' => 'solrcloud-stage.iktsenteret.c.bitbit.net',
+      'core' => 'jobbkompasset_dev',
+      'password' => getenv('SOLR_PASS'),
+      'scheme' => 'https',
+      'port' => '443',
+    ],
+  ],
+];
+$config['search_api.server.studievelgeren'] = [
+  'backend_config' => [
+    'connector_config' => [
+      'host' => 'solrcloud-stage.iktsenteret.c.bitbit.net',
+      'core' => 'studievelgeren_dev',
+      'password' => getenv('SOLR_PASS'),
+      'scheme' => 'https',
+      'port' => '443',
+    ],
+  ],
+];
+$config['search_api.server.utdanningno'] = [
+  'backend_config' => [
+    'connector_config' => [
+      'user' => 'solr',
+      'host' => 'solrcloud-stage.iktsenteret.c.bitbit.net',
+      'core' => 'utdanningno_dev',
+      'password' => getenv('SOLR_PASS'),
+    ],
+  ],
+];
+$config['search_api.server.utdanningno_native'] = [
+  'backend_config' => [
+    'connector_config' => [
+      'host' => 'solrcloud-stage.iktsenteret.c.bitbit.net',
+      'core' => 'utdanningno_dev_native',
+      'password' => getenv('SOLR_PASS'),
+      'scheme' => 'https',
+      'port' => '443',
+    ],
+  ],
+];
+</pre>
+
+Med denne metoden så unngår vi å bruke `config_split` og de komplikasjonene det medfører. For å fullføre dette så må du ha `SOLR_PASS` spesifisert i `source/utdanning.no/.env` som dette:
+<pre>
+SOLR_PASS='PASSORDHER'
+</pre>
+
+
+### 11. Avslutning
 
 Litt opprydning for å blidgjøre Drupal og for å synkronisere dev-nettstedene med siste status i kodebasene.
 
