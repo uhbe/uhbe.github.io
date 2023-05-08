@@ -374,4 +374,4 @@ Databasen kan gjenopprettes med denne kommandoen:
 
 > ./robo.phar db:restore-data FEATURE.dev.data.utdanning.no.YYYMMDD.sql.gz
 
-
+Har her antatt at databasen brukes til dev.data.utdanning.no. Endre postfikset til `drush` og `db`-kommandoene og endre filnavnet som det passer.
