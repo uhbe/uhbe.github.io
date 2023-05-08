@@ -22,7 +22,7 @@ Legg inn dev.utdanning.no, dev.min.utdanning.no og dev.data.utdanning.no i `/etc
 
 - installer Docker. Se [https://docs.docker.com/install/linux/docker-ce/ubuntu/](https://docs.docker.com/install/linux/docker-ce/ubuntu/) for instruksjoner for Ubuntu
 - Installer docker-compose: `sudo apt install docker-compose`
-- Meld deg inn i docker-gruppa. Etter dette har det vist seg nødvendig å restarte pc-en.
+- Meld deg inn i docker-gruppa. Etter dette har det vist seg nødvendig å restarte pc-en. `sudo usermod -a -G docker DITTBRUKERNAVN`
 - For Mac: Installer Docker Desktop
 - For Mac: Kildekoden må være sjekket ut i en mappe som ligger inne i 'File sharing'-innstillingene til Docker. Hvis ikke så får ikke Mac mountet filsystemet inne i Docker.
 
@@ -359,4 +359,19 @@ Sjekk deretter at følgende nettsteder er operative:
 - [http://dev.utdanning.no](http://dev.utdanning.no)
 - [http://dev.min.utdanning.no](http://dev.min.utdanning.no)
 - [http://dev.data.utdanning.no](http://dev.data.utdanning.no)
+
+### 12. Lokal backup
+
+Noen ganger er det kjekt å ha en backup av sin lokale database. Det kan også være nyttig å ha flere databaser å sjonglere med hvis man jobber med features over lang tid uten å merge til development-branch, samtidig som man innimellom må hoppe over til development-branchen for å fikse diverse. Det kan da være enklere å bytte database samtidig som man bytter branch enn å gå gjennom Drupal-dansen med `composer install`, `drush cr`, `drush updb`, `drush cim`, `drush cr` og komplikasjoner med (de)aktivering av moduler og fjerning av innhold som er avhengig av moduler som deaktiveres.
+
+Lokal backup kan lagres med denne kommandoen:
+
+> ./robo.phar drush:data "sql-dump --extra-dump=--no-tablespaces \| gzip > FEATURE.dev.data.utdanning.no.YYYMMDD.sql.gz"
+
+`--no-tablespaces` fører til at databasen dumpes uten `tablespace information`. Denne parameteren er lagt på for å unngå en mulig feil i dumpen.
+
+Databasen kan gjenopprettes med denne kommandoen:
+
+> ./robo.phar db:restore-data FEATURE.dev.data.utdanning.no.YYYMMDD.sql.gz
+
 
